@@ -42,7 +42,7 @@ public class Employee {
         childNames = new LinkedList<>();
         childIdNumbers = new LinkedList<>();
     }
-
+	//long method//
     public void setMonthlySalary(int grade) {
         int baseSalary;
         switch (grade) {
@@ -61,7 +61,7 @@ public class Employee {
 
         monthlySalary = isForeigner ? (int) (baseSalary * 1.5) : baseSalary;
     }
-
+	//duplicate code//
     public void setAnnualDeductible(int deductible) {
         this.annualDeductible = deductible;
     }
