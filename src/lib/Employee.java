@@ -42,7 +42,7 @@ public class Employee {
         childNames = new LinkedList<>();
         childIdNumbers = new LinkedList<>();
     }
-	//long method//
+
     public void setMonthlySalary(int grade) {
         int baseSalary;
         switch (grade) {
@@ -61,7 +61,7 @@ public class Employee {
 
         monthlySalary = isForeigner ? (int) (baseSalary * 1.5) : baseSalary;
     }
-	//duplicate code//
+
     public void setAnnualDeductible(int deductible) {
         this.annualDeductible = deductible;
     }
@@ -119,13 +119,7 @@ public class Employee {
     private List<String> childNames;
     private List<String> childIdNumbers;
 
-    public enum Gender {
-        LAKI_LAKI,
-        PEREMPUAN
-    }
-
-    public Employee(String employeeId, String firstName, String lastName, String idNumber, String address,
-                    int yearJoined, int monthJoined, int dayJoined, boolean isForeigner, Gender gender) {
+    public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, int yearJoined, int monthJoined, int dayJoined, boolean isForeigner, boolean gender) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -140,25 +134,35 @@ public class Employee {
         childNames = new LinkedList<>();
         childIdNumbers = new LinkedList<>();
     }
-//LOng method//
+
+    // (Comment): setMonthlySalary
     public void setMonthlySalary(int grade) {
+        monthlySalary = calculateMonthlySalary(grade);
+    }
+
+    // (long code) Method: getBaseSalary
+    private int getBaseSalary(int grade) {
         switch (grade) {
             case 1:
-                monthlySalary = calculateSalary(GRADE_1_SALARY);
-                break;
+                return 3000000;
             case 2:
-                monthlySalary = calculateSalary(GRADE_2_SALARY);
-                break;
+                return 5000000;
             case 3:
-                monthlySalary = calculateSalary(GRADE_3_SALARY);
-                break;
+                return 7000000;
             default:
                 throw new IllegalArgumentException("Invalid grade");
         }
     }
-//Duplicate code//
-    private int calculateSalary(int baseSalary) {
-        return isForeigner ? (int) (baseSalary * FOREIGNER_SALARY_MULTIPLIER) : baseSalary;
+
+    // (Duplicate code) Method: adjustForForeigner
+    private int adjustForForeigner(int baseSalary) {
+        return isForeigner ? (int) (baseSalary * 1.5) : baseSalary;
+    }
+
+    //calculateMonthlySalary
+    private int calculateMonthlySalary(int grade) {
+        int baseSalary = getBaseSalary(grade);
+        return adjustForForeigner(baseSalary);
     }
 
     public void setAnnualDeductible(int deductible) {
@@ -171,7 +175,7 @@ public class Employee {
 
     public void setSpouse(String spouseName, String spouseIdNumber) {
         this.spouseName = spouseName;
-        this.spouseIdNumber = spouseIdNumber;
+        this.spouseIdNumber = idNumber;
     }
 
     public void addChild(String childName, String childIdNumber) {
@@ -180,22 +184,16 @@ public class Employee {
     }
 
     public int getAnnualIncomeTax() {
-        int monthWorkingInYear = calculateWorkingMonthsInYear();
+        LocalDate date = LocalDate.now();
 
-        return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible,
-                spouseIdNumber.equals(""), childIdNumbers.size());
-    }
-
-    private int calculateWorkingMonthsInYear() {
-        LocalDate currentDate = LocalDate.now();
-
-        if (currentDate.getYear() == yearJoined) {
-            return currentDate.getMonthValue() - monthJoined;
+        if (date.getYear() == yearJoined) {
+            monthWorkingInYear = date.getMonthValue() - monthJoined;
         } else {
-            return MONTHS_IN_YEAR;
+            monthWorkingInYear = 12;
         }
     }
-//format kode//
+
+    // Getters and setters for firstName, lastName, and employeeId
     public String getEmployeeId() {
         return employeeId;
     }
@@ -220,6 +218,6 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    
+    // ... Other getters and setters ...
 }
 
