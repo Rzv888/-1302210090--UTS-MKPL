@@ -195,8 +195,7 @@ public class Employee {
             return MONTHS_IN_YEAR;
         }
     }
-
-    // Getters and setters for firstName, lastName, and employeeId
+//format kode//
     public String getEmployeeId() {
         return employeeId;
     }
@@ -221,6 +220,6 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    // ... Other getters and setters ...
+    
 }
 
