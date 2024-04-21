@@ -51,12 +51,7 @@ public class Employee {
 	 * Fungsi untuk menentukan gaji bulanan pegawai berdasarkan grade kepegawaiannya (grade 1: 3.000.000 per bulan, grade 2: 5.000.000 per bulan, grade 3: 7.000.000 per bulan)
 	 * Jika pegawai adalah warga negara asing gaji bulanan diperbesar sebanyak 50%
 	 */
-	
-	 public void setMonthlySalary(int grade) {
-		int baseSalary = getBaseSalary(grade);
-		monthlySalary = calculateSalaryWithForeignerAdjustment(baseSalary);
-	}
-	
+	//Long Method Hasil Refactoring//
 	private int getBaseSalary(int grade) {
 		switch (grade) {
 			case 1:
@@ -73,37 +68,37 @@ public class Employee {
 	private int calculateSalaryWithForeignerAdjustment(int baseSalary) {
 		return isForeigner ? (int) (baseSalary * 1.5) : baseSalary;
 	}
-	
-	
-	public void setAnnualDeductible(int deductible) {	
-		this.annualDeductible = deductible;
-	}
-	
-	public void setAdditionalIncome(int income) {	
-		this.otherMonthlyIncome = income;
-	}
-	
-	public void setSpouse(String spouseName, String spouseIdNumber) {
-		this.spouseName = spouseName;
-		this.spouseIdNumber = idNumber;
-	}
-	
-	public void addChild(String childName, String childIdNumber) {
-		childNames.add(childName);
-		childIdNumbers.add(childIdNumber);
-	}
-	
-	public int getAnnualIncomeTax() {
-		
-		//Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
-		LocalDate date = LocalDate.now();
-		
-		if (date.getYear() == yearJoined) {
-			monthWorkingInYear = date.getMonthValue() - monthJoined;
-		}else {
-			monthWorkingInYear = 12;
-		}
-		
-		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
-	}
+	//Duplicate code hasil refactoring//
+	public void setMonthlySalary(int grade) {
+        int baseSalary = getBaseSalary(grade);
+        monthlySalary = calculateSalaryWithForeignerAdjustment(baseSalary);
+    }
+
+    public void setAnnualDeductible(int deductible) {
+        this.annualDeductible = deductible;
+    }
+
+    public void setAdditionalIncome(int income) {
+        this.otherMonthlyIncome = income;
+    }
+
+    public void setSpouse(String spouseName, String spouseIdNumber) {
+        this.spouseName = spouseName;
+        this.spouseIdNumber = idNumber;
+    }
+
+    public void addChild(String childName, String childIdNumber) {
+        childNames.add(childName);
+        childIdNumbers.add(childIdNumber);
+    }
+
+    public int getAnnualIncomeTax() {
+        int monthWorkingInYear = calculateMonthWorkingInYear();
+        return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
+    }
+
+    private int calculateMonthWorkingInYear() {
+        LocalDate date = LocalDate.now();
+        return (date.getYear() == yearJoined) ? date.getMonthValue() - monthJoined : 12;
+    }
 }
