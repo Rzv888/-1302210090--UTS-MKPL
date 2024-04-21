@@ -46,7 +46,6 @@ public class Employee {
 		childNames = new LinkedList<String>();
 		childIdNumbers = new LinkedList<String>();
 	}
-
 	//Long Method Hasil Refactoring//
 	private int getBaseSalary(int grade) {
 		switch (grade) {
