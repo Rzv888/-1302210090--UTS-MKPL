@@ -134,6 +134,5 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    // ... Other getters and setters ...
 }
-
+//Format penulisan kode //
